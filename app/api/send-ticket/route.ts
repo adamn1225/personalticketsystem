@@ -1,21 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
 import formidable from 'formidable';
-import fs from 'fs';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { Readable } from 'stream';
 import { IncomingMessage } from 'http';
 import { Socket } from 'net';
+import fs from 'fs';
 
 export const config = {
     api: {
         bodyParser: false,
     },
-};
-
-type TicketFields = {
-    subject: string;
-    priority: string;
-    description: string;
 };
 
 const parseForm = (req: NextRequest): Promise<{ fields: formidable.Fields; files: formidable.Files }> => {
@@ -24,16 +18,13 @@ const parseForm = (req: NextRequest): Promise<{ fields: formidable.Fields; files
     return new Promise((resolve, reject) => {
         const stream = Readable.from(req.body as any);
 
-        // Create a writable stream to handle piping
         const { PassThrough } = require('stream');
         const passThrough = new PassThrough();
 
-        // Create a mock socket to satisfy TypeScript's IncomingMessage constructor
         const mockSocket = new Socket();
         const mockReq = new IncomingMessage(mockSocket);
         mockReq.headers = Object.fromEntries(req.headers.entries());
 
-        // Pipe the body into the writable stream and then into the mock request
         stream.pipe(passThrough);
         passThrough.pipe(mockReq);
 
@@ -44,8 +35,24 @@ const parseForm = (req: NextRequest): Promise<{ fields: formidable.Fields; files
     });
 };
 
-const fileToBuffer = async (file: formidable.File): Promise<Buffer> => {
-    return fs.promises.readFile(file.filepath);
+const uploadToR2 = async (key: string, body: Buffer | Readable, contentType: string) => {
+    const s3 = new S3Client({
+        region: process.env.CLOUDFLARE_R2_REGION,
+        endpoint: process.env.CLOUDFLARE_R2_ENDPOINT,
+        credentials: {
+            accessKeyId: process.env.CLOUDFLARE_R2_ACCESS_KEY!,
+            secretAccessKey: process.env.CLOUDFLARE_R2_SECRET_KEY!,
+        },
+    });
+
+    const command = new PutObjectCommand({
+        Bucket: process.env.CLOUDFLARE_R2_BUCKET,
+        Key: key,
+        Body: body,
+        ContentType: contentType,
+    });
+
+    await s3.send(command);
 };
 
 export async function POST(req: NextRequest) {
@@ -55,48 +62,37 @@ export async function POST(req: NextRequest) {
             subject: fields.subject?.toString() || '',
             priority: fields.priority?.toString() || '',
             description: fields.description?.toString() || '',
-        } as TicketFields;
+        };
 
         if (!subject || !priority || !description) {
             return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
         }
 
-        const attachments: any[] = [];
+        // Store form content in R2
+        const formContentKey = `forms/${Date.now()}-${subject}.json`;
+        const formContent = JSON.stringify({ subject, priority, description });
+        await uploadToR2(formContentKey, Buffer.from(formContent), 'application/json');
+
+        // Store uploaded files in R2
+        const uploadedFiles: string[] = [];
         if (files.screenshot) {
-            const uploaded = Array.isArray(files.screenshot) ? files.screenshot : [files.screenshot];
-            for (const file of uploaded) {
-                const content = await fileToBuffer(file);
-                attachments.push({
-                    filename: file.originalFilename || 'attachment',
-                    content,
-                    contentType: file.mimetype || 'application/octet-stream',
-                });
+            const screenshots = Array.isArray(files.screenshot) ? files.screenshot : [files.screenshot];
+            for (const file of screenshots) {
+                const fileKey = `uploads/${Date.now()}-${file.originalFilename}`;
+                const fileStream = fs.createReadStream(file.filepath);
+                await uploadToR2(fileKey, fileStream, file.mimetype || 'application/octet-stream');
+                uploadedFiles.push(fileKey);
             }
         }
 
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS,
-            },
+        return NextResponse.json({
+            success: true,
+            message: 'Form and files uploaded successfully',
+            formContentKey,
+            uploadedFiles,
         });
-
-        const mailOptions = {
-            from: process.env.EMAIL_USER,
-            to: 'noah@ntslogistics.com',
-            subject: `Support Ticket [${priority.toUpperCase()}] - ${subject}`,
-            text: description,
-            html: `<p><strong>Priority:</strong> ${priority}</p>
-                   <p><strong>Subject:</strong> ${subject}</p>
-                   <p><strong>Description:</strong><br/>${description.replace(/\n/g, '<br/>')}</p>`,
-            attachments,
-        };
-
-        await transporter.sendMail(mailOptions);
-        return NextResponse.json({ success: true });
     } catch (error) {
-        console.error('Ticket error:', error);
-        return NextResponse.json({ error: 'Failed to send ticket' }, { status: 500 });
+        console.error('Error uploading to R2:', error);
+        return NextResponse.json({ error: 'Failed to upload to R2' }, { status: 500 });
     }
 }

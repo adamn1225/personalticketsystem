@@ -36,24 +36,22 @@ const SupportTicketForm = () => {
         });
 
         try {
-            console.log("Sending request...");
-            const res = await fetch("/api/send-ticket/", {
+            const res = await fetch("/api/send-ticket", {
                 method: "POST",
                 body: formData,
             });
 
-            const text = await res.text();
-            console.log("Response body:", text);
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error);
 
-            if (!res.ok) throw new Error(text);
-
+            console.log("Uploaded to R2:", data);
             setSubmitted(true);
-            console.log("Ticket submitted successfully");
         } catch (err) {
             console.error(err);
             setError("Something went wrong. Try again later.");
         }
     };
+
     const closePopup = () => {
         setSubmitted(false);
         setForm({ subject: "", priority: "low", description: "" });
