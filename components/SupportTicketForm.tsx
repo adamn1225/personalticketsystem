@@ -60,7 +60,7 @@ const SupportTicketForm = () => {
     };
 
     return (
-        <div className="max-w-6xl w-full h-fullmx-auto flex flex-col md:flex-row gap-6 p-4 bg-white rounded shadow">
+        <div className="max-w-7xl w-full h-fullmx-auto flex flex-col md:flex-row gap-6 p-4 bg-white rounded shadow">
             {submitted && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <div className="bg-white p-6 rounded shadow-lg text-center">
@@ -171,7 +171,7 @@ const SupportTicketForm = () => {
                     />
                 </div>
             </form>
-            <aside className="h-1/2 max-h-[750px] overflow-y-auto w-full md:w-2/5 bg-gray-50 border border-gray-200 rounded p-4 shadow-sm">
+            <aside className="h-1/2 max-h-[750px] overflow-y-auto w-full md:w-3/5 bg-gray-50 border border-gray-200 rounded p-4 shadow-sm">
                 <h3 className="text-lg font-semibold text-gray-800 mb-2">📸 How to Take a Screenshot</h3>
                 <p className="text-sm text-gray-700 mb-2">
                     Submitting a screenshot with your ticket helps us resolve your issue faster.

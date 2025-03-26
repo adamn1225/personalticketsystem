@@ -19,7 +19,7 @@ const BuyMeACoffeeWidget = () => {
         script.setAttribute("data-name", "BMC-Widget");
         script.setAttribute("data-id", "anoah1225v");
         script.setAttribute("data-description", boomerMode ? "Back in my day, we mailed support tickets..." : "Support me on Buy me a coffee!");
-        script.setAttribute("data-message", boomerMode ? "Support this young whippersnapper!" : "Thanks for stopping by!");
+        script.setAttribute("data-message", boomerMode ? "Support this young whippersnapper!" : "Support me - Buy me a coffee!");
         script.setAttribute("data-color", boomerMode ? "#8B5CF6" : "#FFDD00");
         script.setAttribute("data-position", "Right");
         script.setAttribute("data-x_margin", "18");

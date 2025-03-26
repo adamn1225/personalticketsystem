@@ -4,7 +4,7 @@ import BuyMeACoffeeWidget from "@/components/BuyMeACoffeeWidget"; // Import BuyM
 
 export default function Home() {
   return (
-    <div className="bg-gradient-to-r from-emerald-50 to-blue-200 min-h-screen w-screen p-2 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+    <div className="bg-gradient-to-r from-emerald-50 to-blue-200 min-h-screen w-screen p-2 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <div className="absolute top-4 right-1/2 transform translate-x-1/2">
         <BoomerToggle /> {/* Add the toggle */}
       </div>
@@ -15,6 +15,11 @@ export default function Home() {
         <SupportTicketForm />
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
+        <div className="fixed bottom-0 left-0 right-8 flex justify-end items-center bg-opacity-50 p-4">
+          <h2 style={{ fontFamily: "vscript, sans-serif" }} className="text-2xl pr-12 pt-3">
+            Buy me a coffee! ☕️
+          </h2>
+        </div>
         <BuyMeACoffeeWidget />
       </footer>
     </div>
