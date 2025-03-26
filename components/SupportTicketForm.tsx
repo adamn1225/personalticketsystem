@@ -85,13 +85,14 @@ const SupportTicketForm = () => {
                         name="subject"
                         value={form.subject}
                         onChange={handleChange}
+                        placeholder="Enter a subject of the issue"
                         required
-                        className="mt-1 w-full border border-gray-300 p-2 rounded"
+                        className="mt-1 w-full border text-zinc-950  border-gray-300 p-2 rounded"
                     />
                 </div>
 
                 <div>
-                    <label className="block font-medium text-sm text-gray-700">Priority Level</label>
+                    <label className="block font-medium text-sm text-gray-900">Priority Level</label>
                     <select
                         name="priority"
                         value={form.priority}
@@ -105,11 +106,12 @@ const SupportTicketForm = () => {
                 </div>
 
                 <div>
-                    <label className="block font-medium text-sm text-gray-700">Description</label>
+                    <label className="block font-medium text-sm text-gray-900">Description</label>
                     <textarea
                         name="description"
                         value={form.description}
                         onChange={handleChange}
+                        placeholder="Describe the issue you're facing"
                         required
                         className="mt-1 w-full border border-gray-300 p-2 rounded"
                         rows={5}

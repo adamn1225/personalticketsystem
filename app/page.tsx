@@ -9,7 +9,7 @@ export default function Home() {
         <BoomerToggle /> {/* Add the toggle */}
       </div>
       <main className="flex flex-col justify-center items-center gap-6 md:gap-12 w-full mt-16 md:mt-0 ">
-        <h1 className="text-4xl font-bold text-center">
+        <h1 className="text-xl md:text-4xl text-zinc-950 font-bold text-center">
           Next Support Ticket System
         </h1>
         <SupportTicketForm />

@@ -6,7 +6,7 @@ const BoomerToggle = () => {
 
     return (
         <div className="flex justify-center items-center gap-2">
-            <label htmlFor="boomerToggle" className="text-sm text-gray-700">
+            <label htmlFor="boomerToggle" className="text-sm text-nowrap text-gray-700">
                 🧓 Boomer Mode
             </label>
             <div
