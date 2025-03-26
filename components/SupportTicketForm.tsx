@@ -4,7 +4,8 @@ import { useState } from "react";
 
 const SupportTicketForm = () => {
     const [form, setForm] = useState({ subject: "", priority: "low", description: "" });
-    const [file, setFile] = useState<File | null>(null);
+    const [files, setFiles] = useState<File[]>([]);
+    const [previews, setPreviews] = useState<string[]>([]);
     const [submitted, setSubmitted] = useState(false);
     const [error, setError] = useState("");
 
@@ -13,8 +14,13 @@ const SupportTicketForm = () => {
     };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
-            setFile(e.target.files[0]);
+        if (e.target.files) {
+            const selectedFiles = Array.from(e.target.files);
+            setFiles(selectedFiles);
+
+            // Create preview URLs
+            const previewUrls = selectedFiles.map(file => URL.createObjectURL(file));
+            setPreviews(previewUrls);
         }
     };
 
@@ -26,7 +32,9 @@ const SupportTicketForm = () => {
         formData.append("subject", form.subject);
         formData.append("priority", form.priority);
         formData.append("description", form.description);
-        if (file) formData.append("screenshot", file);
+        files.forEach((file, index) => {
+            formData.append("screenshot", file);
+        });
 
         try {
             const res = await fetch("/api/send-ticket", {
@@ -87,7 +95,7 @@ const SupportTicketForm = () => {
             </div>
 
             <div>
-                <label className="block font-medium text-sm text-gray-700 mb-1">Attach Screenshot</label>
+                <label className="block font-medium text-sm text-gray-700 mb-1">Attach Screenshots</label>
                 <div className="flex items-center justify-center w-full">
                     <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-400 rounded-lg cursor-pointer hover:border-blue-500 transition">
                         <div className="flex flex-col items-center justify-center pt-5 pb-6">
@@ -107,19 +115,26 @@ const SupportTicketForm = () => {
                                 ></path>
                             </svg>
                             <p className="mb-2 text-sm text-gray-500">Click to upload or drag & drop</p>
-                            <p className="text-xs text-gray-500">PNG, JPG (Max 2MB)</p>
+                            <p className="text-xs text-gray-500">PNG, JPG (Max 2MB each)</p>
                         </div>
                         <input
                             type="file"
                             name="screenshot"
                             accept="image/*"
+                            multiple
                             onChange={handleFileChange}
                             className="hidden"
                         />
                     </label>
                 </div>
-                {file && (
-                    <p className="text-sm mt-2 text-green-600">Selected: {file.name}</p>
+                {previews.length > 0 && (
+                    <div className="mt-4 grid grid-cols-2 md:grid-cols-3 gap-4">
+                        {previews.map((src, index) => (
+                            <div key={index} className="border p-1 rounded">
+                                <img src={src} alt={`Preview ${index + 1}`} className="object-contain h-32 w-full" />
+                            </div>
+                        ))}
+                    </div>
                 )}
             </div>
 
