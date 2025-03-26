@@ -1,9 +1,8 @@
-// app/api/send-ticket/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import formidable from 'formidable';
+import fs from 'fs';
 import { Readable } from 'stream';
-import { Buffer } from 'buffer';
 
 type TicketFields = {
     subject: string;
@@ -17,22 +16,41 @@ export const config = {
     },
 };
 
-const parseForm = (req: any): Promise<{ fields: any; files: any }> => {
-    const form = formidable({ multiples: false });
+
+
+const parseForm = (req: NextRequest): Promise<{ fields: formidable.Fields; files: formidable.Files }> => {
+    const form = formidable({ multiples: true }); // Allow multiple files if needed
+
     return new Promise((resolve, reject) => {
-        form.parse(req, (err: Error | null, fields: formidable.Fields, files: formidable.Files) => {
+        // Convert the NextRequest body to a readable stream
+        const stream = Readable.from(req.body as any);
+
+        // Create a mock Node.js IncomingMessage object
+        const { IncomingMessage } = require('http');
+        const mockReq = new IncomingMessage(stream);
+        mockReq.headers = req.headers; // Pass headers from NextRequest
+
+        form.parse(mockReq, (err: Error | null, fields: formidable.Fields, files: formidable.Files) => {
             if (err) reject(err);
             else resolve({ fields, files });
         });
     });
 };
 
+const fileToBuffer = async (file: formidable.File): Promise<Buffer> => {
+    return fs.promises.readFile(file.filepath);
+};
+
 export async function POST(req: NextRequest) {
     try {
-        const nodeReq = (req as any).req; // access the raw Node.js request
-        const { fields, files }: { fields: TicketFields; files: formidable.Files } = await parseForm(nodeReq);
+        // Parse the form data
+        const { fields, files } = await parseForm(req);
+        const { subject, priority, description } = {
+            subject: fields.subject?.toString() || '',
+            priority: fields.priority?.toString() || '',
+            description: fields.description?.toString() || '',
+        } as TicketFields;
 
-        const { subject, priority, description } = fields;
         if (!subject || !priority || !description) {
             return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
         }
@@ -76,13 +94,4 @@ export async function POST(req: NextRequest) {
         console.error('Ticket error:', error);
         return NextResponse.json({ error: 'Failed to send ticket' }, { status: 500 });
     }
-}
-
-async function fileToBuffer(file: any): Promise<Buffer> {
-    const stream = Readable.from(file.file);
-    const chunks: Buffer[] = [];
-    for await (const chunk of stream) {
-        chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
-    }
-    return Buffer.concat(chunks);
 }
