@@ -4,6 +4,7 @@ import { useState } from "react";
 
 const SupportTicketForm = () => {
     const [form, setForm] = useState({ subject: "", priority: "low", description: "" });
+    const [file, setFile] = useState<File | null>(null);
     const [submitted, setSubmitted] = useState(false);
     const [error, setError] = useState("");
 
@@ -11,14 +12,26 @@ const SupportTicketForm = () => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            setFile(e.target.files[0]);
+        }
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
+
+        const formData = new FormData();
+        formData.append("subject", form.subject);
+        formData.append("priority", form.priority);
+        formData.append("description", form.description);
+        if (file) formData.append("screenshot", file);
+
         try {
-            const res = await fetch("/.netlify/functions/send-ticket", {
+            const res = await fetch("/api/send-ticket", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(form),
+                body: formData,
             });
             if (!res.ok) throw new Error("Failed to send ticket");
             setSubmitted(true);
@@ -33,7 +46,7 @@ const SupportTicketForm = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="max-w-4xl w-full mx-auto p-4 bg-white rounded shadow space-y-4">
+        <form onSubmit={handleSubmit} className="max-w-4xl w-full mx-auto p-4 bg-white rounded shadow space-y-4" encType="multipart/form-data">
             <h2 className="text-xl font-semibold text-gray-800">Submit a Ticket</h2>
 
             <div>
@@ -71,6 +84,43 @@ const SupportTicketForm = () => {
                     className="mt-1 w-full border border-gray-300 p-2 rounded"
                     rows={5}
                 />
+            </div>
+
+            <div>
+                <label className="block font-medium text-sm text-gray-700 mb-1">Attach Screenshot</label>
+                <div className="flex items-center justify-center w-full">
+                    <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-400 rounded-lg cursor-pointer hover:border-blue-500 transition">
+                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                            <svg
+                                aria-hidden="true"
+                                className="w-8 h-8 mb-2 text-gray-500"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M7 16V4m0 0L3 8m4-4l4 4m4 12h6m-6 0a2 2 0 100-4m0 4a2 2 0 010-4m0 4v-4m0 0h-2a2 2 0 00-2 2v2"
+                                ></path>
+                            </svg>
+                            <p className="mb-2 text-sm text-gray-500">Click to upload or drag & drop</p>
+                            <p className="text-xs text-gray-500">PNG, JPG (Max 2MB)</p>
+                        </div>
+                        <input
+                            type="file"
+                            name="screenshot"
+                            accept="image/*"
+                            onChange={handleFileChange}
+                            className="hidden"
+                        />
+                    </label>
+                </div>
+                {file && (
+                    <p className="text-sm mt-2 text-green-600">Selected: {file.name}</p>
+                )}
             </div>
 
             {error && <p className="text-red-600 text-sm">{error}</p>}
