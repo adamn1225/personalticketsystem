@@ -60,7 +60,7 @@ const SupportTicketForm = () => {
     };
 
     return (
-        <div className="max-w-6xl w-full mx-auto flex flex-col md:flex-row gap-6 p-4 bg-white rounded shadow">
+        <div className="max-w-6xl w-full h-fullmx-auto flex flex-col md:flex-row gap-6 p-4 bg-white rounded shadow">
             {submitted && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <div className="bg-white p-6 rounded shadow-lg text-center">
@@ -76,7 +76,7 @@ const SupportTicketForm = () => {
                 </div>
             )}
 
-            <form onSubmit={handleSubmit} className="max-w-6xl w-full mx-auto p-4 bg-white rounded shadow space-y-4" encType="multipart/form-data">
+            <form onSubmit={handleSubmit} className="max-w-6xl  h-1/2 w-full mx-auto p-4 bg-white rounded shadow space-y-4" encType="multipart/form-data">
                 <h2 className="text-xl font-semibold text-gray-800">Submit a Ticket</h2>
 
                 <div>
@@ -170,37 +170,54 @@ const SupportTicketForm = () => {
                     Submit Ticket
                 </button>
             </form>
-            <aside className="w-full md:w-1/3 bg-gray-50 border border-gray-200 rounded p-4 shadow-sm">
+            <aside className="h-1/2 max-h-[650px] overflow-y-auto w-full md:w-2/5 bg-gray-50 border border-gray-200 rounded p-4 shadow-sm">
                 <h3 className="text-lg font-semibold text-gray-800 mb-2">📸 How to Take a Screenshot</h3>
                 <p className="text-sm text-gray-700 mb-2">
                     Submitting a screenshot with your ticket helps us resolve your issue faster.
                 </p>
+
                 <div className="mb-4">
                     <h4 className="font-semibold text-sm text-gray-800">🪟 Windows:</h4>
                     <ul className="text-sm text-gray-600 list-disc list-inside ml-2">
                         <li>Press <kbd className="bg-gray-200 px-1 rounded">Win</kbd> + <kbd className="bg-gray-200 px-1 rounded">Shift</kbd> + <kbd className="bg-gray-200 px-1 rounded">S</kbd></li>
                         <li>Select an area to capture</li>
-                        <li>Paste in Paint or attach directly here</li>
+                        <li>Paste into Paint or attach the saved image here</li>
                     </ul>
                 </div>
-                <div>
+
+                <div className="mb-4">
                     <h4 className="font-semibold text-sm text-gray-800">🍏 Mac:</h4>
                     <ul className="text-sm text-gray-600 list-disc list-inside ml-2">
                         <li>Press <kbd className="bg-gray-200 px-1 rounded">Shift</kbd> + <kbd className="bg-gray-200 px-1 rounded">Command</kbd> + <kbd className="bg-gray-200 px-1 rounded">4</kbd></li>
-                        <li>Select your screen area</li>
-                        <li>Find it on your desktop and attach here</li>
+                        <li>Select an area</li>
+                        <li>Find the screenshot on your desktop and attach it</li>
                     </ul>
                 </div>
+
                 <div className="mt-4 border-t pt-4">
                     <h4 className="font-semibold text-sm text-gray-800">💡 Extra Tips</h4>
                     <ul className="text-sm text-gray-600 list-disc list-inside ml-2 space-y-1">
-                        <li>Be specific in the description</li>
-                        <li>Include steps that caused the issue</li>
-                        <li>Use plain English — no tech terms needed</li>
-                        <li>If unsure, just say “I don&apos;t know” — I&apos;ll figure it out</li>
+                        <li>Be specific — what were you trying to do?</li>
+                        <li>Include any error messages (copy or screenshot them)</li>
+                        <li>Don’t panic — just describe what happened</li>
+                        <li>“It broke” is fine, but “I clicked the blue button and it froze” is gold</li>
+                    </ul>
+                </div>
+
+                <div className="mt-4 border-t pt-4">
+                    <h4 className="font-semibold text-sm text-gray-800">🧓 Common Issues (and Fixes)</h4>
+                    <ul className="text-sm text-gray-600 list-disc list-inside ml-2 space-y-1">
+                        <li><b>🖱️ Mouse not working?</b> Try unplugging and plugging it back in.</li>
+                        <li><b>🌐 No internet?</b> Try restarting your Wi-Fi or modem.</li>
+                        <li><b>📄 Can’t find a file?</b> Try searching the file name in the bottom left (Windows) or top right (Mac).</li>
+                        <li><b>🔊 No sound?</b> Check your volume and headphones aren't unplugged.</li>
+                        <li><b>💻 Computer acting weird?</b> Restarting fixes 95% of issues.</li>
+                        <li><b>⏳ Slow computer?</b> Close unused tabs or programs (seriously, you don’t need 47 open).</li>
+                        <li><b>💬 Got a weird pop-up?</b> Screenshot it and send it with your ticket — don’t click anything.</li>
                     </ul>
                 </div>
             </aside>
+
         </div>
     );
 };
