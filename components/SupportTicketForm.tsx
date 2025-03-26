@@ -162,13 +162,14 @@ const SupportTicketForm = () => {
 
                 {error && <p className="text-red-600 text-sm">{error}</p>}
 
-                <button
-                    type="submit"
-                    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-                    disabled={false} // Ensure this is not set to true
-                >
-                    Submit Ticket
-                </button>
+                <div className="flex justify-center">
+                    <input
+                        type="button"
+                        value="Submit Ticket"
+                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer"
+                        onClick={handleSubmit} // Attach the submit handler here
+                    />
+                </div>
             </form>
             <aside className="h-1/2 max-h-[750px] overflow-y-auto w-full md:w-2/5 bg-gray-50 border border-gray-200 rounded p-4 shadow-sm">
                 <h3 className="text-lg font-semibold text-gray-800 mb-2">📸 How to Take a Screenshot</h3>
