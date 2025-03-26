@@ -1,4 +1,6 @@
 const nodemailer = require("nodemailer");
+const formidable = require("formidable");
+const fs = require("fs");
 
 exports.handler = async (event) => {
     if (event.httpMethod !== "POST") {
@@ -9,15 +11,34 @@ exports.handler = async (event) => {
     }
 
     try {
-        const formData = JSON.parse(event.body);
+        // Parse the multipart form data
+        const form = new formidable.IncomingForm({ multiples: true });
+        const parsedData = await new Promise((resolve, reject) => {
+            form.parse(event, (err, fields, files) => {
+                if (err) reject(err);
+                else resolve({ fields, files });
+            });
+        });
 
-        const { subject, priority, description } = formData;
+        const { subject, priority, description } = parsedData.fields;
+        const { screenshot } = parsedData.files;
 
         if (!subject || !priority || !description) {
             return {
                 statusCode: 400,
                 body: JSON.stringify({ error: "Missing required fields" }),
             };
+        }
+
+        // Read the uploaded file (if any)
+        let attachments = [];
+        if (screenshot) {
+            const screenshots = Array.isArray(screenshot) ? screenshot : [screenshot];
+            attachments = screenshots.map((file) => ({
+                filename: file.originalFilename,
+                content: fs.readFileSync(file.filepath),
+                contentType: file.mimetype,
+            }));
         }
 
         // Configure nodemailer
@@ -34,6 +55,7 @@ exports.handler = async (event) => {
             to: "noah@ntslogistics.com", // Replace with your recipient email
             subject: `Support Ticket [${priority.toUpperCase()}] - ${subject}`,
             text: description,
+            attachments, // Attach the uploaded files
         };
 
         // Send the email

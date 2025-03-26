@@ -27,20 +27,19 @@ const SupportTicketForm = () => {
         e.preventDefault();
         setError("");
 
-        const formData = {
-            subject: form.subject,
-            priority: form.priority,
-            description: form.description,
-        };
+        const formData = new FormData();
+        formData.append("subject", form.subject);
+        formData.append("priority", form.priority);
+        formData.append("description", form.description);
+        files.forEach((file) => {
+            formData.append("screenshot", file);
+        });
 
         try {
             console.log("Sending request...");
             const res = await fetch("/.netlify/functions/send-ticket", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formData),
+                body: formData,
             });
 
             if (!res.ok) throw new Error("Failed to send ticket");
