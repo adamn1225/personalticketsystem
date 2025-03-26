@@ -37,12 +37,15 @@ const SupportTicketForm = () => {
 
         try {
             console.log("Sending request...");
-            const res = await fetch("/.netlify/functions/send-ticket", {
+            const res = await fetch("/api/send-ticket/", {
                 method: "POST",
                 body: formData,
             });
 
-            if (!res.ok) throw new Error("Failed to send ticket");
+            const text = await res.text();
+            console.log("Response body:", text);
+
+            if (!res.ok) throw new Error(text);
 
             setSubmitted(true);
             console.log("Ticket submitted successfully");
@@ -51,7 +54,6 @@ const SupportTicketForm = () => {
             setError("Something went wrong. Try again later.");
         }
     };
-
     const closePopup = () => {
         setSubmitted(false);
         setForm({ subject: "", priority: "low", description: "" });
