@@ -55,16 +55,12 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
         }
 
-        let attachment = null;
-        if (files?.screenshot && files.screenshot[0]) {
-            const file = files.screenshot[0];
-            const fileBuffer = await fileToBuffer(file);
-            attachment = {
-                filename: file.originalFilename,
-                content: fileBuffer,
-                contentType: file.mimetype,
-            };
-        }
+        const mailOptions = {
+            from: process.env.EMAIL_USER, // Sender email address
+            to: 'noah@ntslogistics.com', // Recipient email address
+            subject: subject, // Use the subject from the request body
+            text: JSON.stringify({ subject, priority, description }, null, 2), // Format the email content as JSON
+        };
 
         const transporter = nodemailer.createTransport({
             service: 'gmail',
@@ -73,20 +69,6 @@ export async function POST(req: NextRequest) {
                 pass: process.env.EMAIL_PASS,
             },
         });
-
-        const mailOptions: any = {
-            from: process.env.EMAIL_USER,
-            to: process.env.SUPPORT_DEST_EMAIL || process.env.EMAIL_USER,
-            subject: `Support Ticket [${priority.toUpperCase()}] - ${subject}`,
-            text: description,
-            html: `<p><strong>Priority:</strong> ${priority}</p>
-             <p><strong>Subject:</strong> ${subject}</p>
-             <p><strong>Description:</strong><br/>${description.replace(/\n/g, '<br/>')}</p>`
-        };
-
-        if (attachment) {
-            mailOptions.attachments = [attachment];
-        }
 
         await transporter.sendMail(mailOptions);
         return NextResponse.json({ success: true });
