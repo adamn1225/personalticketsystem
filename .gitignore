@@ -23,7 +23,7 @@
 # misc
 .DS_Store
 *.pem
-
+/awscliv2.zip
 # debug
 npm-debug.log*
 yarn-debug.log*

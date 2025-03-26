@@ -60,7 +60,7 @@ const SupportTicketForm = () => {
     };
 
     return (
-        <div className="w-full">
+        <div className="max-w-6xl w-full mx-auto flex flex-col md:flex-row gap-6 p-4 bg-white rounded shadow">
             {submitted && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <div className="bg-white p-6 rounded shadow-lg text-center">
@@ -170,6 +170,37 @@ const SupportTicketForm = () => {
                     Submit Ticket
                 </button>
             </form>
+            <aside className="w-full md:w-1/3 bg-gray-50 border border-gray-200 rounded p-4 shadow-sm">
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">📸 How to Take a Screenshot</h3>
+                <p className="text-sm text-gray-700 mb-2">
+                    Submitting a screenshot with your ticket helps us resolve your issue faster.
+                </p>
+                <div className="mb-4">
+                    <h4 className="font-semibold text-sm text-gray-800">🪟 Windows:</h4>
+                    <ul className="text-sm text-gray-600 list-disc list-inside ml-2">
+                        <li>Press <kbd className="bg-gray-200 px-1 rounded">Win</kbd> + <kbd className="bg-gray-200 px-1 rounded">Shift</kbd> + <kbd className="bg-gray-200 px-1 rounded">S</kbd></li>
+                        <li>Select an area to capture</li>
+                        <li>Paste in Paint or attach directly here</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 className="font-semibold text-sm text-gray-800">🍏 Mac:</h4>
+                    <ul className="text-sm text-gray-600 list-disc list-inside ml-2">
+                        <li>Press <kbd className="bg-gray-200 px-1 rounded">Shift</kbd> + <kbd className="bg-gray-200 px-1 rounded">Command</kbd> + <kbd className="bg-gray-200 px-1 rounded">4</kbd></li>
+                        <li>Select your screen area</li>
+                        <li>Find it on your desktop and attach here</li>
+                    </ul>
+                </div>
+                <div className="mt-4 border-t pt-4">
+                    <h4 className="font-semibold text-sm text-gray-800">💡 Extra Tips</h4>
+                    <ul className="text-sm text-gray-600 list-disc list-inside ml-2 space-y-1">
+                        <li>Be specific in the description</li>
+                        <li>Include steps that caused the issue</li>
+                        <li>Use plain English — no tech terms needed</li>
+                        <li>If unsure, just say “I don&apos;t know” — I&apos;ll figure it out</li>
+                    </ul>
+                </div>
+            </aside>
         </div>
     );
 };
