@@ -1,5 +1,6 @@
 import SupportTicketForm from "@/components/SupportTicketForm";
 import BoomerToggle from "@/components/BoomerToggle"; // Import BoomerToggle
+import BuyMeACoffeeWidget from "@/components/BuyMeACoffeeWidget"; // Import BuyMeACoffeeWidget
 
 export default function Home() {
   return (
@@ -8,13 +9,14 @@ export default function Home() {
         <BoomerToggle /> {/* Add the toggle */}
       </div>
       <main className="flex flex-col justify-center items-center gap-6 md:gap-12 w-full mt-16 md:mt-0 ">
-
         <h1 className="text-4xl font-bold text-center">
           Next Support Ticket System
         </h1>
         <SupportTicketForm />
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center"></footer>
+      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
+        <BuyMeACoffeeWidget />
+      </footer>
     </div>
   );
 }

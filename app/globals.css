@@ -48,3 +48,22 @@ body {
     padding: 0.25rem 0.5rem;
     border-radius: 4px;
 }
+
+/* public/styles/globals.css or your global.css file */
+#bmc-wbtn {
+  max-width: 90vw !important;
+  z-index: 9999 !important;
+}
+
+@media (max-width: 640px) {
+  #bmc-wbtn {
+    max-width: 90vw !important;
+    z-index: 9999 !important;
+  }
+
+  #bmc-wbtn > div {
+    transform: scale(0.85);
+    transform-origin: bottom right;
+  }
+}
+
