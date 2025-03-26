@@ -170,7 +170,7 @@ const SupportTicketForm = () => {
                     Submit Ticket
                 </button>
             </form>
-            <aside className="h-1/2 max-h-[650px] overflow-y-auto w-full md:w-2/5 bg-gray-50 border border-gray-200 rounded p-4 shadow-sm">
+            <aside className="h-1/2 max-h-[750px] overflow-y-auto w-full md:w-2/5 bg-gray-50 border border-gray-200 rounded p-4 shadow-sm">
                 <h3 className="text-lg font-semibold text-gray-800 mb-2">📸 How to Take a Screenshot</h3>
                 <p className="text-sm text-gray-700 mb-2">
                     Submitting a screenshot with your ticket helps us resolve your issue faster.

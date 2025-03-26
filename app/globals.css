@@ -24,3 +24,27 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.boomer-mode input,
+.boomer-mode textarea,
+.boomer-mode select {
+    font-size: 1.25rem;
+    padding: 1rem;
+}
+
+.boomer-mode label {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.boomer-mode button {
+    font-size: 1.25rem;
+    padding: 1rem 2rem;
+}
+
+.boomer-mode kbd {
+    font-size: 1rem;
+    background-color: #ddd;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+}
