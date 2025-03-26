@@ -27,21 +27,26 @@ const SupportTicketForm = () => {
         e.preventDefault();
         setError("");
 
-        const formData = new FormData();
-        formData.append("subject", form.subject);
-        formData.append("priority", form.priority);
-        formData.append("description", form.description);
-        files.forEach((file, index) => {
-            formData.append("screenshot", file);
-        });
+        const formData = {
+            subject: form.subject,
+            priority: form.priority,
+            description: form.description,
+        };
 
         try {
-            const res = await fetch("/api/send-ticket", {
+            console.log("Sending request...");
+            const res = await fetch("/.netlify/functions/send-ticket", {
                 method: "POST",
-                body: formData,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
             });
+
             if (!res.ok) throw new Error("Failed to send ticket");
+
             setSubmitted(true);
+            console.log("Ticket submitted successfully");
         } catch (err) {
             console.error(err);
             setError("Something went wrong. Try again later.");
@@ -56,7 +61,7 @@ const SupportTicketForm = () => {
     };
 
     return (
-        <div>
+        <div className="w-full">
             {submitted && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <div className="bg-white p-6 rounded shadow-lg text-center">
@@ -72,7 +77,7 @@ const SupportTicketForm = () => {
                 </div>
             )}
 
-            <form onSubmit={handleSubmit} className="max-w-4xl w-full mx-auto p-4 bg-white rounded shadow space-y-4" encType="multipart/form-data">
+            <form onSubmit={handleSubmit} className="max-w-6xl w-full mx-auto p-4 bg-white rounded shadow space-y-4" encType="multipart/form-data">
                 <h2 className="text-xl font-semibold text-gray-800">Submit a Ticket</h2>
 
                 <div>
@@ -161,6 +166,7 @@ const SupportTicketForm = () => {
                 <button
                     type="submit"
                     className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                    disabled={false} // Ensure this is not set to true
                 >
                     Submit Ticket
                 </button>
