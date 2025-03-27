@@ -131,7 +131,7 @@ export async function POST(req: NextRequest) {
 
         const mailOptions = {
             from: process.env.EMAIL_USER,
-            to: 'noah@ntslogistics.com',
+            to: 'anoah1225@gmail.com',
             subject: `Support Ticket from ${name} [${priority.toUpperCase()}] - ${subject}`,
             html: `
                 <p><strong>Priority:</strong> ${priority}</p>
