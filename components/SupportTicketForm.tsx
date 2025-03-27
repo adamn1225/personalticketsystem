@@ -137,7 +137,7 @@ const SupportTicketForm = () => {
                         value={form.name}
                         onChange={handleChange}
                         placeholder="First or last name"
-                        className="mt-1 w-1/2 border border-gray-300 p-2 rounded"
+                        className="mt-1 w-2/3 border border-gray-300 p-2 rounded"
                     />
 
                 </div>
@@ -224,7 +224,7 @@ const SupportTicketForm = () => {
                     />
                 </div>
             </form>
-            <aside className="h-1/2 max-h-[750px] overflow-y-auto w-full md:w-3/5 bg-gray-50 border border-gray-200 rounded p-4 shadow-sm">
+            <aside className="h-1/2 max-h-[900px] overflow-y-auto w-full md:w-3/5 bg-gray-50 border border-gray-200 rounded p-4 shadow-sm">
                 <h3 className="text-lg font-semibold text-gray-800 mb-2">📸 How to Take a Screenshot</h3>
                 <p className="text-sm text-gray-700 mb-2">
                     Submitting a screenshot with your ticket helps us resolve your issue faster.
