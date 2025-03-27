@@ -3,7 +3,7 @@ import SupportTicketForm from "@/components/SupportTicketForm";
 import ModeToggle from "@/components/BoomerToggle"; // Import BoomerToggle
 import BuyMeACoffeeWidget from "@/components/BuyMeACoffeeWidget"; // Import BuyMeACoffeeWidget
 import { useBoomerMode } from "@/components/BoomerModeProvider"; // Import BoomerProvider
-
+import AboutMe from "@/components/AboutMe";
 
 export default function Home() {
   const { boomerMode, advancedMode, simpleMode } = useBoomerMode();
@@ -12,13 +12,13 @@ export default function Home() {
     ? "bg-gradient-to-r from-emerald-50 to-blue-200"
     : advancedMode
       ? "bg-gradient-to-r from-teal-600 to-zinc-900"
-      : " bg-gradient-to-r from-emerald-200 to-blue-400";
+      : " bg-gradient-to-r from-emerald-500 to-blue-800";
 
   const textColor = boomerMode
     ? "text-zinc-900"
     : advancedMode
       ? "text-white"
-      : "text-zinc-800";
+      : "text-zinc-950";
 
   return (
     <div className={`${backgroundColor} min-h-screen w-screen p-2 sm:p-20 font-[family-name:var(--font-geist-sans)]`}>
@@ -30,6 +30,7 @@ export default function Home() {
           Next Support Ticket System
         </h1>
         <SupportTicketForm />
+        <AboutMe />
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
         <div className="fixed bottom-0 left-0 right-8 flex justify-end items-center bg-opacity-50 p-4">
