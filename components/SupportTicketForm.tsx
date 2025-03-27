@@ -100,7 +100,7 @@ const SupportTicketForm = () => {
                         onChange={handleChange}
                         placeholder="Enter a subject of the issue"
                         required
-                        className="mt-1 w-full border text-zinc-950  border-gray-300 p-2 rounded"
+                        className="mt-1 w-full border text-zinc-950  border-gray-300 p-2 rounded placeholder:text-gray-400"
                     />
                 </div>
 
@@ -110,7 +110,7 @@ const SupportTicketForm = () => {
                         name="priority"
                         value={form.priority}
                         onChange={handleChange}
-                        className="mt-1 w-full border border-gray-300 p-2 rounded"
+                        className="mt-1 w-full border border-gray-300 text-gray-900 p-2 rounded"
                     >
                         <option value="low">Low</option>
                         <option value="medium">Medium</option>
@@ -126,7 +126,7 @@ const SupportTicketForm = () => {
                         onChange={handleChange}
                         placeholder="Describe the issue you're facing"
                         required
-                        className="mt-1 w-full border border-gray-300 p-2 rounded"
+                        className="mt-1 w-full border border-gray-300 p-2 rounded  text-gray-900 placeholder:text-gray-400"
                         rows={5}
                     />
                 </div>
@@ -138,7 +138,7 @@ const SupportTicketForm = () => {
                         value={form.name}
                         onChange={handleChange}
                         placeholder="First or last name"
-                        className="mt-1 w-4/5 border border-gray-300 p-2 rounded"
+                        className="mt-1 w-4/5 border border-gray-300 p-2 rounded placeholder:text-gray-400"
                     />
 
                 </div>
@@ -154,7 +154,7 @@ const SupportTicketForm = () => {
                                 value={form.email}
                                 onChange={handleChange}
                                 placeholder={boomerMode ? "itsbarbara1961@aol.net" : "you@example.com"}
-                                className="mt-1 w-full border border-gray-300 p-2 rounded"
+                                className="mt-1 w-full border border-gray-300 p-2 rounded placeholder:text-gray-400"
                             />
                         </span>
                         <span>
@@ -164,7 +164,7 @@ const SupportTicketForm = () => {
                                 value={form.ph}
                                 onChange={handleChange}
                                 placeholder="(555) 867-5309"
-                                className="mt-1 w-full border border-gray-300 p-2 rounded"
+                                className="mt-1 w-full border border-gray-300 p-2 rounded placeholder:text-gray-400"
                             />
                         </span>
                     </div>
