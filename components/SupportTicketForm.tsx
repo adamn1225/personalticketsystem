@@ -190,7 +190,7 @@ const SupportTicketForm = () => {
                                     ></path>
                                 </svg>
                                 <p className="mb-2 text-sm text-gray-500">Click to upload or drag & drop</p>
-                                <p className="text-xs text-gray-500">PNG, JPG (Max 2MB each)</p>
+                                <p className="text-xs text-gray-500">PNG, JPG, JPEG, JFIF, PDF (Max 2MB each)</p>
                             </div>
                             <input
                                 type="file"
