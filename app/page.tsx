@@ -33,7 +33,7 @@ export default function Home() {
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
         <div className="fixed bottom-0 left-0 right-8 flex justify-end items-center bg-opacity-50 p-4">
-          <h2 style={{ fontFamily: "vscript, sans-serif" }} className={`text-2xl ${textColor} pr-12 pt-3`}>
+          <h2 style={{ fontFamily: "vscript, sans-serif" }} className={`hidden md:block text-2xl ${textColor} pr-12 pt-3`}>
             Buy me a coffee! ☕️
           </h2>
         </div>

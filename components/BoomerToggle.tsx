@@ -27,12 +27,12 @@ const ModeToggle = () => {
     };
 
     return (
-        <div className="flex justify-center items-center gap-2 py-4">
+        <div className={boomerMode ? "flex flex-col justify-center items-center gap-2 py-4" : "flex justify-center items-center gap-2 py-4"}>
             <span className={boomerMode ? `text-xl text-gray-900` : `text-base text-white`}>Mode:</span>
             <div className="flex bg-gray-200 rounded-full overflow-hidden text-xs font-medium shadow-sm">
                 <button
                     onClick={() => setMode("boomer")}
-                    className={`px-4 py-1 transition ${getActive() === "boomer" ? "bg-yellow-100 text-yellow-800" : "text-gray-900"}`}
+                    className={`md:px-4 py-1 transition ${getActive() === "boomer" ? "bg-yellow-100 text-yellow-800" : "text-gray-900"}`}
                 >
                     Boomer
                 </button>
