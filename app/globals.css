@@ -72,5 +72,15 @@ body {
     transform: scale(0.85);
     transform-origin: bottom right;
   }
+
+  .boomer-mode select {
+    font-size: 1.25rem;
+    padding: .8rem !important;
+}
+
+.boomer-mode button {
+    font-size: 1.25rem;
+    padding: 1rem 1.75rem;
+}
 }
 
