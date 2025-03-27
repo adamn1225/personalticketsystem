@@ -41,7 +41,7 @@ const SupportTicketForm = () => {
         formData.append("subject", form.subject);
         formData.append("priority", form.priority);
         formData.append("description", form.description);
-        formData.append("fname", form.name);
+        formData.append("name", form.name);
         formData.append("ph", form.ph);
         formData.append("email", form.email);
         files.forEach((file) => {
