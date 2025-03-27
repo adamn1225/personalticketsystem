@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
-import { useBoomerMode } from "./BoomerModeProvider"
+import { useBoomerMode } from "./BoomerModeProvider";
 import UserLevelTips from "./UserLevelTips";
+import { motion } from "framer-motion";
 
 const SupportTicketForm = () => {
     const [form, setForm] = useState({ subject: "", priority: "low", description: "", name: "", ph: "", email: "" });
@@ -9,6 +10,7 @@ const SupportTicketForm = () => {
     const [previews, setPreviews] = useState<string[]>([]);
     const [submitted, setSubmitted] = useState(false);
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false); // Add loading state
 
     const { boomerMode } = useBoomerMode();
 
@@ -22,7 +24,7 @@ const SupportTicketForm = () => {
             setFiles(selectedFiles);
 
             // Create preview URLs
-            const previewUrls = selectedFiles.map(file => URL.createObjectURL(file));
+            const previewUrls = selectedFiles.map((file) => URL.createObjectURL(file));
             setPreviews(previewUrls);
         }
     };
@@ -36,6 +38,8 @@ const SupportTicketForm = () => {
             setError("Please provide at least an email or phone number.");
             return;
         }
+
+        setLoading(true); // Start loading
 
         const formData = new FormData();
         formData.append("subject", form.subject);
@@ -62,6 +66,8 @@ const SupportTicketForm = () => {
         } catch (err) {
             console.error(err);
             setError("Something went wrong. Try again later.");
+        } finally {
+            setLoading(false); // Stop loading
         }
     };
 
@@ -73,7 +79,7 @@ const SupportTicketForm = () => {
     };
 
     return (
-        <div className="max-w-7xl w-full h-fullmx-auto flex flex-col md:flex-row gap-6 p-4 bg-white rounded shadow">
+        <div className="max-w-7xl w-full h-full mx-auto flex flex-col md:flex-row gap-6 p-4 bg-white rounded shadow">
             {submitted && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <div className="bg-white p-6 rounded shadow-lg text-center">
@@ -89,7 +95,26 @@ const SupportTicketForm = () => {
                 </div>
             )}
 
-            <form onSubmit={handleSubmit} className="max-w-6xl  h-1/2 w-full mx-auto p-4 bg-white rounded shadow space-y-4" encType="multipart/form-data">
+            {loading && (
+                <motion.div
+                    className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                >
+                    <div className="bg-white p-6 rounded shadow-lg text-center">
+                        <h2 className="text-xl font-semibold text-blue-600">Sending message...</h2>
+                        <motion.div
+                            className="mt-4 w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"
+                            initial={{ rotate: 0 }}
+                            animate={{ rotate: 360 }}
+                            transition={{ repeat: Infinity, duration: 1 }}
+                        ></motion.div>
+                    </div>
+                </motion.div>
+            )}
+
+            <form onSubmit={handleSubmit} className="max-w-6xl h-1/2 w-full mx-auto p-4 bg-white rounded shadow space-y-4" encType="multipart/form-data">
                 <h2 className="text-xl font-semibold text-gray-800">Submit a Ticket</h2>
 
                 <div>
@@ -100,7 +125,7 @@ const SupportTicketForm = () => {
                         onChange={handleChange}
                         placeholder="Enter a subject of the issue"
                         required
-                        className="mt-1 w-full border text-zinc-950  border-gray-300 p-2 rounded placeholder:text-gray-400"
+                        className="mt-1 w-full border text-zinc-950 border-gray-300 p-2 rounded placeholder:text-gray-400"
                     />
                 </div>
 
@@ -126,7 +151,7 @@ const SupportTicketForm = () => {
                         onChange={handleChange}
                         placeholder="Describe the issue you're facing"
                         required
-                        className="mt-1 w-full border border-gray-300 p-2 rounded  text-gray-900 placeholder:text-gray-400"
+                        className="mt-1 w-full border border-gray-300 p-2 rounded text-gray-900 placeholder:text-gray-400"
                         rows={5}
                     />
                 </div>
@@ -140,8 +165,8 @@ const SupportTicketForm = () => {
                         placeholder="First or last name"
                         className="mt-1 w-4/5 border border-gray-300 p-2 rounded placeholder:text-gray-400"
                     />
-
                 </div>
+
                 <div className="flex flex-col gap-2">
                     <h3 className="text-lg text-gray-900 font-medium">
                         Best way to reach you - you can choose either or both
@@ -170,6 +195,7 @@ const SupportTicketForm = () => {
                     </div>
                     {error && <p className="text-red-600 text-sm">{error}</p>}
                 </div>
+
                 <div>
                     <label className="block font-medium text-sm text-gray-700 mb-1">Attach Screenshots</label>
                     <div className="flex items-center justify-center w-full">
@@ -218,15 +244,13 @@ const SupportTicketForm = () => {
 
                 <div className="flex justify-center">
                     <input
-                        type="button"
+                        type="submit"
                         value="Submit Ticket"
                         className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer"
-                        onClick={handleSubmit} // Attach the submit handler here
                     />
                 </div>
             </form>
             <UserLevelTips />
-
         </div>
     );
 };
