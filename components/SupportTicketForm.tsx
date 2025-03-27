@@ -1,12 +1,15 @@
 "use client";
 import { useState } from "react";
+import { useBoomerMode } from "./BoomerModeProvider"
 
 const SupportTicketForm = () => {
-    const [form, setForm] = useState({ subject: "", priority: "low", description: "" });
+    const [form, setForm] = useState({ subject: "", priority: "low", description: "", name: "", ph: "", email: "" });
     const [files, setFiles] = useState<File[]>([]);
     const [previews, setPreviews] = useState<string[]>([]);
     const [submitted, setSubmitted] = useState(false);
     const [error, setError] = useState("");
+
+    const { boomerMode } = useBoomerMode();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -27,10 +30,19 @@ const SupportTicketForm = () => {
         e.preventDefault();
         setError("");
 
+        // Ensure at least one contact method is provided
+        if (!form.email && !form.ph) {
+            setError("Please provide at least an email or phone number.");
+            return;
+        }
+
         const formData = new FormData();
         formData.append("subject", form.subject);
         formData.append("priority", form.priority);
         formData.append("description", form.description);
+        formData.append("fname", form.name);
+        formData.append("ph", form.ph);
+        formData.append("email", form.email);
         files.forEach((file) => {
             formData.append("screenshot", file);
         });
@@ -54,7 +66,7 @@ const SupportTicketForm = () => {
 
     const closePopup = () => {
         setSubmitted(false);
-        setForm({ subject: "", priority: "low", description: "" });
+        setForm({ subject: "", priority: "low", description: "", name: "", ph: "", email: "" });
         setFiles([]);
         setPreviews([]);
     };
@@ -118,6 +130,45 @@ const SupportTicketForm = () => {
                     />
                 </div>
 
+                <div>
+                    <label className="block font-medium text-sm text-gray-900">Name</label>
+                    <input
+                        name="name"
+                        value={form.name}
+                        onChange={handleChange}
+                        placeholder="First or last name"
+                        className="mt-1 w-1/2 border border-gray-300 p-2 rounded"
+                    />
+
+                </div>
+                <div className="flex flex-col gap-2">
+                    <h3 className="text-lg text-gray-900 font-medium">
+                        Best way to reach you - you can choose either or both
+                    </h3>
+                    <div className="flex gap-2">
+                        <span>
+                            <label className="block font-medium text-sm text-gray-900">Email</label>
+                            <input
+                                name="email"
+                                value={form.email}
+                                onChange={handleChange}
+                                placeholder={boomerMode ? "itsbarbara1961@aol.net" : "you@example.com"}
+                                className="mt-1 w-full border border-gray-300 p-2 rounded"
+                            />
+                        </span>
+                        <span>
+                            <label className="block font-medium text-sm text-gray-900">Phone Number</label>
+                            <input
+                                name="ph"
+                                value={form.ph}
+                                onChange={handleChange}
+                                placeholder="(555) 867-5309"
+                                className="mt-1 w-full border border-gray-300 p-2 rounded"
+                            />
+                        </span>
+                    </div>
+                    {error && <p className="text-red-600 text-sm">{error}</p>}
+                </div>
                 <div>
                     <label className="block font-medium text-sm text-gray-700 mb-1">Attach Screenshots</label>
                     <div className="flex items-center justify-center w-full">

@@ -92,25 +92,30 @@ const parseForm = (req: NextRequest): Promise<{ fields: Record<string, string>; 
 export async function POST(req: NextRequest) {
     try {
         const { fields, files } = await parseForm(req);
-        const { subject, priority, description } = fields;
+        const { subject, priority, description, ph, name, email } = fields;
 
-        if (!subject || !priority || !description) {
+        // Validate required fields
+        if (!subject || !priority || !description || !name) {
             return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+        }
+
+        // Ensure at least one contact method is provided
+        if (!ph && !email) {
+            return NextResponse.json({ error: 'Please provide at least an email or phone number' }, { status: 400 });
         }
 
         // Store form content in R2
         const formContentKey = `forms/${Date.now()}-${subject}.json`;
-        const formContent = JSON.stringify({ subject, priority, description });
+        const formContent = JSON.stringify({ subject, priority, description, ph, name, email });
         await uploadToR2(formContentKey, Buffer.from(formContent), 'application/json');
 
         // Store uploaded files in R2 and generate signed URLs
         const uploadedFiles: string[] = [];
         for (const file of files) {
             const fileKey = `uploads/${Date.now()}-${file.filename}`;
-            console.log('Uploading file with key:', fileKey); // Debugging log
+            console.log('Uploading file with key:', fileKey);
             await uploadToR2(fileKey, file.buffer, file.mimetype);
 
-            // Generate signed URL
             const signedUrl = await generateSignedUrl(fileKey);
             uploadedFiles.push(signedUrl);
         }
@@ -126,12 +131,14 @@ export async function POST(req: NextRequest) {
 
         const mailOptions = {
             from: process.env.EMAIL_USER,
-            to: 'noah@ntslogistics.com', // Replace with your recipient email
-            subject: `Support Ticket [${priority.toUpperCase()}] - ${subject}`,
+            to: 'noah@ntslogistics.com',
+            subject: `Support Ticket from ${name} [${priority.toUpperCase()}] - ${subject}`,
             html: `
                 <p><strong>Priority:</strong> ${priority}</p>
                 <p><strong>Subject:</strong> ${subject}</p>
                 <p><strong>Description:</strong><br/>${description.replace(/\n/g, '<br/>')}</p>
+                <p><strong>Phone Number:</strong> ${ph || "Not provided"}</p>
+                <p><strong>Email:</strong> ${email || "Not provided"}</p>
                 <p><strong>Uploaded Files:</strong></p>
                 <ul>
                     ${uploadedFiles.map((file) => `<li><a href="${file}" target="_blank">${file}</a></li>`).join('')}
