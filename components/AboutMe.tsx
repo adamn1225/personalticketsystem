@@ -18,22 +18,22 @@ function AboutMe() {
                             <ul className='flex flex-col w-full items-center justify-center gap-2'>
                                 <li className='flex items-center gap-2 text-wrap text-md font-medium'>
                                     <FaCheckDouble style={{ color: '#ff5a1f', minWidth: '24px' }} />
-                                    <span>Really good with computers</span>
+                                    <span className='text-zinc-900'>Really good with computers</span>
                                 </li>
                                 <li className='flex items-center gap-2 text-wrap text-md font-medium'>
                                     <FaCheckDouble style={{ color: '#ff5a1f', minWidth: '24px' }} />
-                                    <span>Knowledgeable in taking screenshots, attaching a picture to an email, and more!</span>
+                                    <span className='text-zinc-900'>Knowledgeable in taking screenshots, attaching a picture to an email, and more!</span>
                                 </li>
                             </ul>
                             <h3 className='text-lg font-bold font-mono tracking-wider text-center'>INCLUDING:</h3>
                             <ul className='flex flex-col w-full items-center justify-center gap-2'>
                                 <li className='flex items-center gap-2 text-wrap text-md font-medium'>
                                     <FaCheckDouble style={{ color: '#ff5a1f', minWidth: '24px' }} />
-                                    <span>Plugging it out and back in</span>
+                                    <span className='text-zinc-900'>Plugging it out and back in</span>
                                 </li>
                                 <li className='flex items-center gap-2 text-wrap text-md font-medium'>
                                     <FaCheckDouble style={{ color: '#ff5a1f', minWidth: '24px' }} />
-                                    <span>Are you sure it was plugged in?</span>
+                                    <span className='text-zinc-900'>Are you sure it was plugged in?</span>
                                 </li>
                                 <li className='flex items-center gap-2 text-wrap text-md font-medium'>
                                     <FaCheckDouble style={{ color: '#ff5a1f', minWidth: '24px' }} />
@@ -41,7 +41,7 @@ function AboutMe() {
                                 </li>
                                 <li className='flex items-center gap-2 text-wrap text-md font-medium'>
                                     <FaCheckDouble style={{ color: '#ff5a1f', minWidth: '24px' }} />
-                                    <span>Where&apos;s the sound coming from? I&apos;ll find it.</span>
+                                    <span className='text-zinc-900'>Where&apos;s the sound coming from? I&apos;ll find it.</span>
                                 </li>
                             </ul>
                         </div>
