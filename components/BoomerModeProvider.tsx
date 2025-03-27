@@ -1,39 +1,40 @@
+// components/BoomerModeProvider.tsx
 "use client";
-import { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import { createContext, useContext, useState, ReactNode } from "react";
 
-interface BoomerContextType {
+interface ModeContextType {
     boomerMode: boolean;
+    advancedMode: boolean;
+    simpleMode: boolean;
     toggleBoomerMode: () => void;
+    toggleAdvancedMode: () => void;
+    toggleSimpleMode: () => void;
 }
 
-const BoomerContext = createContext<BoomerContextType | undefined>(undefined);
+const ModeContext = createContext<ModeContextType | undefined>(undefined);
 
 export const useBoomerMode = () => {
-    const context = useContext(BoomerContext);
-    if (!context) throw new Error("useBoomerMode must be used inside BoomerProvider");
+    const context = useContext(ModeContext);
+    if (!context) throw new Error("useBoomerMode must be used inside ModeProvider");
     return context;
 };
 
 export const BoomerProvider = ({ children }: { children: ReactNode }) => {
-    const [boomerMode, setBoomerMode] = useState<boolean>(false); // Default to false
+    const [boomerMode, setBoomerMode] = useState<boolean>(true); // Default to true
+    const [advancedMode, setAdvancedMode] = useState<boolean>(false);
+    const [simpleMode, setSimpleMode] = useState<boolean>(false);
 
-    useEffect(() => {
-        // Load initial state from localStorage after the component has mounted
-        const storedBoomerMode = localStorage.getItem("boomerMode") === "true";
-        setBoomerMode(storedBoomerMode);
-    }, []);
-
-    const toggleBoomerMode = () => {
-        setBoomerMode((prev) => {
-            const newMode = !prev;
-            localStorage.setItem("boomerMode", newMode.toString());
-            return newMode;
-        });
-    };
+    const toggleBoomerMode = () => setBoomerMode((prev) => !prev);
+    const toggleAdvancedMode = () => setAdvancedMode((prev) => !prev);
+    const toggleSimpleMode = () => setSimpleMode((prev) => !prev);
 
     return (
-        <BoomerContext.Provider value={{ boomerMode, toggleBoomerMode }}>
-            <div className={boomerMode ? "boomer-mode" : ""}>{children}</div>
-        </BoomerContext.Provider>
+        <ModeContext.Provider
+            value={{ boomerMode, advancedMode, simpleMode, toggleBoomerMode, toggleAdvancedMode, toggleSimpleMode }}
+        >
+            <div className={boomerMode ? "boomer-mode" : advancedMode ? "advanced-mode" : simpleMode ? "simple-mode" : ""}>
+                {children}
+            </div>
+        </ModeContext.Provider>
     );
 };

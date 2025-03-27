@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useBoomerMode } from "./BoomerModeProvider"
+import UserLevelTips from "./UserLevelTips";
 
 const SupportTicketForm = () => {
     const [form, setForm] = useState({ subject: "", priority: "low", description: "", name: "", ph: "", email: "" });
@@ -137,7 +138,7 @@ const SupportTicketForm = () => {
                         value={form.name}
                         onChange={handleChange}
                         placeholder="First or last name"
-                        className="mt-1 w-2/3 border border-gray-300 p-2 rounded"
+                        className="mt-1 w-4/5 border border-gray-300 p-2 rounded"
                     />
 
                 </div>
@@ -224,53 +225,7 @@ const SupportTicketForm = () => {
                     />
                 </div>
             </form>
-            <aside className="h-1/2 max-h-[900px] overflow-y-auto w-full md:w-3/5 bg-gray-50 border border-gray-200 rounded p-4 shadow-sm">
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">📸 How to Take a Screenshot</h3>
-                <p className="text-sm text-gray-700 mb-2">
-                    Submitting a screenshot with your ticket helps us resolve your issue faster.
-                </p>
-
-                <div className="mb-4">
-                    <h4 className="font-semibold text-sm text-gray-800">🪟 Windows:</h4>
-                    <ul className="text-sm text-gray-600 list-disc list-inside ml-2">
-                        <li>Press <kbd className="bg-gray-200 px-1 rounded">Win</kbd> + <kbd className="bg-gray-200 px-1 rounded">Shift</kbd> + <kbd className="bg-gray-200 px-1 rounded">S</kbd></li>
-                        <li>Select an area to capture</li>
-                        <li>Paste into Paint or attach the saved image here</li>
-                    </ul>
-                </div>
-
-                <div className="mb-4">
-                    <h4 className="font-semibold text-sm text-gray-800">🍏 Mac:</h4>
-                    <ul className="text-sm text-gray-600 list-disc list-inside ml-2">
-                        <li>Press <kbd className="bg-gray-200 px-1 rounded">Shift</kbd> + <kbd className="bg-gray-200 px-1 rounded">Command</kbd> + <kbd className="bg-gray-200 px-1 rounded">4</kbd></li>
-                        <li>Select an area</li>
-                        <li>Find the screenshot on your desktop and attach it</li>
-                    </ul>
-                </div>
-
-                <div className="mt-4 border-t pt-4">
-                    <h4 className="font-semibold text-sm text-gray-800">💡 Extra Tips</h4>
-                    <ul className="text-sm text-gray-600 list-disc list-inside ml-2 space-y-1">
-                        <li>Be specific — what were you trying to do?</li>
-                        <li>Include any error messages (copy or screenshot them)</li>
-                        <li>Don’t panic — just describe what happened</li>
-                        <li>“It broke” is fine, but “I clicked the blue button and it froze” is gold</li>
-                    </ul>
-                </div>
-
-                <div className="mt-4 border-t pt-4">
-                    <h4 className="font-semibold text-sm text-gray-800">🧓 Common Issues (and Fixes)</h4>
-                    <ul className="text-sm text-gray-600 list-disc list-inside ml-2 space-y-1">
-                        <li><b>🖱️ Mouse not working?</b> Try unplugging and plugging it back in.</li>
-                        <li><b>🌐 No internet?</b> Try restarting your Wi-Fi or modem.</li>
-                        <li><b>📄 Can’t find a file?</b> Try searching the file name in the bottom left (Windows) or top right (Mac).</li>
-                        <li><b>🔊 No sound?</b> Check your volume and headphones aren't unplugged.</li>
-                        <li><b>💻 Computer acting weird?</b> Restarting fixes 95% of issues.</li>
-                        <li><b>⏳ Slow computer?</b> Close unused tabs or programs (seriously, you don’t need 47 open).</li>
-                        <li><b>💬 Got a weird pop-up?</b> Screenshot it and send it with your ticket — don’t click anything.</li>
-                    </ul>
-                </div>
-            </aside>
+            <UserLevelTips />
 
         </div>
     );
