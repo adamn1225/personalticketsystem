@@ -32,7 +32,7 @@ const ModeToggle = () => {
             <div className="flex bg-gray-200 rounded-full overflow-hidden text-xs font-medium shadow-sm">
                 <button
                     onClick={() => setMode("boomer")}
-                    className={`md:px-4 py-1 transition ${getActive() === "boomer" ? "bg-yellow-100 text-yellow-800" : "text-gray-900"}`}
+                    className={`px-4 py-1 transition ${getActive() === "boomer" ? "bg-yellow-100 text-yellow-800" : "text-gray-900"}`}
                 >
                     Boomer
                 </button>
