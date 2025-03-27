@@ -12,8 +12,7 @@ const SupportTicketForm = () => {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false); // Add loading state
 
-    const { boomerMode } = useBoomerMode();
-
+    const { boomerMode, advancedMode, toggleAdvancedMode } = useBoomerMode();
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
@@ -79,7 +78,7 @@ const SupportTicketForm = () => {
     };
 
     return (
-        <div className="max-w-7xl w-full h-full mx-auto flex flex-col md:flex-row gap-6 p-4 bg-white rounded shadow">
+        <div className={boomerMode ? `max-w-7xl w-full h-full mx-auto flex flex-col md:flex-row gap-6 p-4 bg-white rounded shadow` : `max-w-7xl w-full h-full mx-auto flex flex-col md:flex-row gap-6 p-4 bg-zinc-900 text-white rounded shadow`}>
             {submitted && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <div className="bg-white p-6 rounded shadow-lg text-center">
@@ -114,142 +113,281 @@ const SupportTicketForm = () => {
                 </motion.div>
             )}
 
-            <form onSubmit={handleSubmit} className="max-w-6xl h-1/2 w-full mx-auto p-4 bg-white rounded shadow space-y-4" encType="multipart/form-data">
-                <h2 className="text-xl font-semibold text-gray-800">Submit a Ticket</h2>
 
-                <div>
-                    <label className="block font-medium text-sm text-gray-700">Subject</label>
-                    <input
-                        name="subject"
-                        value={form.subject}
-                        onChange={handleChange}
-                        placeholder="Enter a subject of the issue"
-                        required
-                        className="mt-1 w-full border text-zinc-950 border-gray-300 p-2 rounded placeholder:text-gray-400"
-                    />
-                </div>
+            {boomerMode ? (
+                <form onSubmit={handleSubmit} className="max-w-6xl h-1/2 w-full mx-auto p-4 bg-white rounded shadow space-y-4" encType="multipart/form-data">
+                    <h2 className="text-xl font-semibold text-gray-800">Submit a Ticket</h2>
 
-                <div>
-                    <label className="block font-medium text-sm text-gray-900">Priority Level</label>
-                    <select
-                        name="priority"
-                        value={form.priority}
-                        onChange={handleChange}
-                        className="mt-1 w-full border border-gray-300 text-gray-900 p-2 rounded"
-                    >
-                        <option value="low">Low</option>
-                        <option value="medium">Medium</option>
-                        <option value="high">High</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label className="block font-medium text-sm text-gray-900">Description</label>
-                    <textarea
-                        name="description"
-                        value={form.description}
-                        onChange={handleChange}
-                        placeholder="Describe the issue you're facing"
-                        required
-                        className="mt-1 w-full border border-gray-300 p-2 rounded text-gray-900 placeholder:text-gray-400"
-                        rows={5}
-                    />
-                </div>
-
-                <div>
-                    <label className="block font-medium text-sm text-gray-900">Name</label>
-                    <input
-                        name="name"
-                        value={form.name}
-                        onChange={handleChange}
-                        placeholder="First or last name"
-                        className="mt-1 w-4/5 border border-gray-300 p-2 rounded placeholder:text-gray-400"
-                    />
-                </div>
-
-                <div className="flex flex-col gap-2">
-                    <h3 className="text-lg text-gray-900 font-medium">
-                        Best way to reach you - you can choose either or both
-                    </h3>
-                    <div className="flex gap-2">
-                        <span>
-                            <label className="block font-medium text-sm text-gray-900">Email</label>
-                            <input
-                                name="email"
-                                value={form.email}
-                                onChange={handleChange}
-                                placeholder={boomerMode ? "itsbarbara1961@aol.net" : "you@example.com"}
-                                className="mt-1 w-full border border-gray-300 p-2 rounded placeholder:text-gray-400"
-                            />
-                        </span>
-                        <span>
-                            <label className="block font-medium text-sm text-gray-900">Phone Number</label>
-                            <input
-                                name="ph"
-                                value={form.ph}
-                                onChange={handleChange}
-                                placeholder="(555) 867-5309"
-                                className="mt-1 w-full border border-gray-300 p-2 rounded placeholder:text-gray-400"
-                            />
-                        </span>
+                    <div>
+                        <label className="block font-medium text-sm text-gray-700">Subject</label>
+                        <input
+                            name="subject"
+                            value={form.subject}
+                            onChange={handleChange}
+                            placeholder="Enter a subject of the issue"
+                            required
+                            className="mt-1 w-full border text-zinc-950 border-gray-300 p-2 rounded placeholder:text-gray-400"
+                        />
                     </div>
-                    {error && <p className="text-red-600 text-sm">{error}</p>}
-                </div>
 
-                <div>
-                    <label className="block font-medium text-sm text-gray-700 mb-1">Attach Screenshots</label>
-                    <div className="flex items-center justify-center w-full">
-                        <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-400 rounded-lg cursor-pointer hover:border-blue-500 transition">
-                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                <svg
-                                    aria-hidden="true"
-                                    className="w-8 h-8 mb-2 text-gray-500"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M7 16V4m0 0L3 8m4-4l4 4m4 12h6m-6 0a2 2 0 100-4m0 4a2 2 0 010-4m0 4v-4m0 0h-2a2 2 0 00-2 2v2"
-                                    ></path>
-                                </svg>
-                                <p className="mb-2 text-sm text-gray-500">Click to upload or drag & drop</p>
-                                <p className="text-xs text-gray-500">PNG, JPG, JPEG, JFIF, PDF (Max 2MB each)</p>
-                            </div>
-                            <input
-                                type="file"
-                                name="screenshot"
-                                accept="image/*"
-                                multiple
-                                onChange={handleFileChange}
-                                className="hidden"
-                            />
-                        </label>
+                    <div>
+                        <label className="block font-medium text-sm text-gray-900">Priority Level</label>
+                        <select
+                            name="priority"
+                            value={form.priority}
+                            onChange={handleChange}
+                            className="mt-1 w-full border border-gray-300 text-gray-900 p-2 rounded"
+                        >
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
                     </div>
-                    {previews.length > 0 && (
-                        <div className="mt-4 grid grid-cols-2 md:grid-cols-3 gap-4">
-                            {previews.map((src, index) => (
-                                <div key={index} className="border p-1 rounded">
-                                    <img src={src} alt={`Preview ${index + 1}`} className="object-contain h-32 w-full" />
-                                </div>
-                            ))}
+
+                    <div>
+                        <label className="block font-medium text-sm text-gray-900">Description</label>
+                        <textarea
+                            name="description"
+                            value={form.description}
+                            onChange={handleChange}
+                            placeholder="Describe the issue you're facing"
+                            required
+                            className="mt-1 w-full border border-gray-300 p-2 rounded text-gray-900 placeholder:text-gray-400"
+                            rows={5}
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block font-medium text-sm text-gray-900">Name</label>
+                        <input
+                            name="name"
+                            value={form.name}
+                            onChange={handleChange}
+                            placeholder="First or last name"
+                            className="mt-1 w-4/5 border border-gray-300 p-2 rounded placeholder:text-gray-400"
+                        />
+                    </div>
+
+                    <div className="flex flex-col gap-2">
+                        <h3 className="text-lg text-gray-900 font-medium">
+                            Best way to reach you - you can choose either or both
+                        </h3>
+                        <div className="flex gap-2">
+                            <span>
+                                <label className="block font-medium text-sm text-gray-900">Email</label>
+                                <input
+                                    name="email"
+                                    value={form.email}
+                                    onChange={handleChange}
+                                    placeholder={boomerMode ? "itsbarbara1961@aol.net" : "you@example.com"}
+                                    className="mt-1 w-full border border-gray-300 p-2 rounded placeholder:text-gray-400"
+                                />
+                            </span>
+                            <span>
+                                <label className="block font-medium text-sm text-gray-900">Phone Number</label>
+                                <input
+                                    name="ph"
+                                    value={form.ph}
+                                    onChange={handleChange}
+                                    placeholder="(555) 867-5309"
+                                    className="mt-1 w-full border border-gray-300 p-2 rounded placeholder:text-gray-400"
+                                />
+                            </span>
                         </div>
-                    )}
-                </div>
+                        {error && <p className="text-red-600 text-sm">{error}</p>}
+                    </div>
 
-                {error && <p className="text-red-600 text-sm">{error}</p>}
+                    <div>
+                        <label className="block font-medium text-sm text-gray-700 mb-1">Attach Screenshots</label>
+                        <div className="flex items-center justify-center w-full">
+                            <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-400 rounded-lg cursor-pointer hover:border-blue-500 transition">
+                                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                    <svg
+                                        aria-hidden="true"
+                                        className="w-8 h-8 mb-2 text-gray-500"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            d="M7 16V4m0 0L3 8m4-4l4 4m4 12h6m-6 0a2 2 0 100-4m0 4a2 2 0 010-4m0 4v-4m0 0h-2a2 2 0 00-2 2v2"
+                                        ></path>
+                                    </svg>
+                                    <p className="mb-2 text-sm text-gray-500">Click to upload or drag & drop</p>
+                                    <p className="text-xs text-gray-500">PNG, JPG, JPEG, JFIF, PDF (Max 2MB each)</p>
+                                </div>
+                                <input
+                                    type="file"
+                                    name="screenshot"
+                                    accept="image/*"
+                                    multiple
+                                    onChange={handleFileChange}
+                                    className="hidden"
+                                />
+                            </label>
+                        </div>
+                        {previews.length > 0 && (
+                            <div className="mt-4 grid grid-cols-2 md:grid-cols-3 gap-4">
+                                {previews.map((src, index) => (
+                                    <div key={index} className="border p-1 rounded">
+                                        <img src={src} alt={`Preview ${index + 1}`} className="object-contain h-32 w-full" />
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
 
-                <div className="flex justify-center">
-                    <input
-                        type="submit"
-                        value="Submit Ticket"
-                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer"
-                    />
-                </div>
-            </form>
+                    {error && <p className="text-red-600 text-sm">{error}</p>}
+
+                    <div className="flex justify-center">
+                        <input
+                            type="submit"
+                            value="Submit Ticket"
+                            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer"
+                        />
+                    </div>
+                </form>
+            ) : (
+                <form onSubmit={handleSubmit} className="max-w-6xl h-1/2 w-full mx-auto p-4 bg-zinc-900 text-white rounded shadow space-y-4" encType="multipart/form-data">
+                    <h2 className="text-xl font-semibold text-gray-50">Submit a Ticket</h2>
+                    <div>
+                        <label className="block font-medium text-sm text-gray-50">Subject</label>
+                        <input
+                            name="subject"
+                            value={form.subject}
+                            onChange={handleChange}
+                            placeholder="Enter a subject of the issue"
+                            required
+                            className="mt-1 w-full border text-zinc-950 border-gray-300 p-2 rounded placeholder:text-gray-400"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block font-medium text-sm text-white">Priority Level</label>
+                        <select
+                            name="priority"
+                            value={form.priority}
+                            onChange={handleChange}
+                            className="mt-1 w-full border border-gray-300  text-white p-2 rounded"
+                        >
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label className="block font-medium text-sm text-white">Description</label>
+                        <textarea
+                            name="description"
+                            value={form.description}
+                            onChange={handleChange}
+                            placeholder="Describe the issue you're facing"
+                            required
+                            className="mt-1 w-full border border-gray-300 p-2 rounded  text-zinc-950 placeholder:text-gray-400"
+                            rows={5}
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block font-medium text-sm text-white">Name</label>
+                        <input
+                            name="name"
+                            value={form.name}
+                            onChange={handleChange}
+                            placeholder="First or last name"
+                            className="mt-1 w-4/5 border border-gray-300 text-zinc-950 p-2 rounded placeholder:text-gray-400"
+                        />
+                    </div>
+
+                    <div className="flex flex-col gap-2">
+                        <h3 className="text-lg text-white font-medium">
+                            Best way to reach you - you can choose either or both
+                        </h3>
+                        <div className="flex gap-2">
+                            <span>
+                                <label className="block font-medium text-sm text-white">Email</label>
+                                <input
+                                    name="email"
+                                    value={form.email}
+                                    onChange={handleChange}
+                                    placeholder={boomerMode ? "itsbarbara1961@aol.net" : "you@example.com"}
+                                    className="mt-1 w-full border border-gray-300 text-zinc-950 p-2 rounded placeholder:text-gray-400"
+                                />
+                            </span>
+                            <span>
+                                <label className="block font-medium text-sm text-white">Phone Number</label>
+                                <input
+                                    name="ph"
+                                    value={form.ph}
+                                    onChange={handleChange}
+                                    placeholder="(555) 867-5309"
+                                    className="mt-1 w-full border border-gray-300 p-2 rounded placeholder:text-gray-400"
+                                />
+                            </span>
+                        </div>
+                        {error && <p className="text-red-600 text-sm">{error}</p>}
+                    </div>
+
+                    <div>
+                        <label className="block font-medium text-sm text-gray-700 mb-1">Attach Screenshots</label>
+                        <div className="flex items-center justify-center w-full">
+                            <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-400 rounded-lg cursor-pointer hover:border-blue-500 transition">
+                                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                    <svg
+                                        aria-hidden="true"
+                                        className="w-8 h-8 mb-2 text-gray-500"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            d="M7 16V4m0 0L3 8m4-4l4 4m4 12h6m-6 0a2 2 0 100-4m0 4a2 2 0 010-4m0 4v-4m0 0h-2a2 2 0 00-2 2v2"
+                                        ></path>
+                                    </svg>
+                                    <p className="mb-2 text-sm text-gray-500">Click to upload or drag & drop</p>
+                                    <p className="text-xs text-gray-500">PNG, JPG, JPEG, JFIF, PDF (Max 2MB each)</p>
+                                </div>
+                                <input
+                                    type="file"
+                                    name="screenshot"
+                                    accept="image/*"
+                                    multiple
+                                    onChange={handleFileChange}
+                                    className="hidden"
+                                />
+                            </label>
+                        </div>
+                        {previews.length > 0 && (
+                            <div className="mt-4 grid grid-cols-2 md:grid-cols-3 gap-4">
+                                {previews.map((src, index) => (
+                                    <div key={index} className="border p-1 rounded">
+                                        <img src={src} alt={`Preview ${index + 1}`} className="object-contain h-32 w-full" />
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
+                    {error && <p className="text-red-600 text-sm">{error}</p>}
+
+                    <div className="flex justify-center">
+                        <input
+                            type="submit"
+                            value="Submit Ticket"
+                            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer"
+                        />
+                    </div>
+                </form>
+            )}
             <UserLevelTips />
         </div>
     );
