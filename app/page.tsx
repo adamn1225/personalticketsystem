@@ -22,10 +22,10 @@ export default function Home() {
 
   return (
     <div className={`${backgroundColor} min-h-screen w-screen p-2 sm:p-20 font-[family-name:var(--font-geist-sans)]`}>
-      <div className="absolute top-0 right-1/2 transform translate-x-1/2">
+      <div className="fixed bg-gray-800 top-0 right-1/2 transform translate-x-1/2 w-full">
         <ModeToggle /> {/* Add the toggle */}
       </div>
-      <main className={boomerMode ? "flex flex-col justify-center items-center gap-6 md:gap-12 w-full mt-32 md:mt-20 " : "flex flex-col justify-center items-center gap-6 md:gap-12 w-full mt-10 md:mt-0"}>
+      <main className={boomerMode ? "flex flex-col justify-center items-center gap-6 md:gap-12 w-full mt-40 md:mt-20 " : "flex flex-col justify-center items-center gap-6 md:gap-12 w-full mt-20 md:mt-0"}>
         <h1 className={`text-xl md:text-4xl ${textColor} font-bold text-center`}>
           Next Support Ticket System
         </h1>
