@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Adam-noah | Boomer Support",
-  description: "Technical support ticket system for boomers",
+  description: "Technical support ticket system to Adam Noah",
 };
 
 export default function RootLayout({

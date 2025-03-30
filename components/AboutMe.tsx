@@ -13,7 +13,7 @@ function AboutMe() {
                     <div className='flex flex-col md:flex-row md:justify-evenly justify-center items-center text-mute-200'>
                         <div className='flex flex-col gap-2'>
                             <Image className='w-52 h-auto self-center' src="/nts-pro-profile.png" alt="" width={208} height={0} />
-                            <h3 className='text-3xl text-center font-bold font-mono tracking-wider'>MEET NOAH</h3>
+                            <h3 className='text-3xl text-center text-gray-900 font-bold font-mono tracking-wider'>MEET NOAH</h3>
                             <div className='my-2' style={{ border: 'solid', borderColor: '#ff5a1f', borderRight: 'none', borderLeft: 'none', borderWidth: '1px' }}></div>
                             <ul className='flex flex-col w-full items-center justify-center gap-2'>
                                 <li className='flex items-center gap-2 text-wrap text-md font-medium'>
